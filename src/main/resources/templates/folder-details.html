@@ -132,6 +132,7 @@
           <th>Task Name</th>
           <th>Status</th>
           <th>Details</th>
+          <th>Delete Task</th>
         </tr>
         </thead>
         <tbody>
@@ -146,6 +147,13 @@
           </td>
           <td>
             <a class="btn btn-info btn-sm" th:href="@{'/details-task/' + ${t.id}}">View More</a>
+          </td>
+          <td>
+            <form th:action="@{'/deleteTask'}" method="post">
+              <input type="hidden" th:value="${t.id}" name="task_id">
+              <input type="hidden" th:value="${folder.id}" name="folder_id">
+            <button class="btn btn-info btn-danger">Delete</button>
+            </form>
           </td>
         </tr>
         </tbody>

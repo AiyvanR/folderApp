@@ -129,4 +129,20 @@ public class MainController {
 
         return "details-task";
     }
+
+    @PostMapping(value = "/deleteTask")
+    public String deleteTask(@RequestParam(name = "folder_id") Long folderId,
+                                 @RequestParam(name = "task_id") Long taskId) {
+        Folders folder = folderService.getFolder(folderId);
+
+        if (folder != null) {
+            Tasks task = folderService.getTask(taskId);
+            if (task != null) {
+                folderService.deleteTask(taskId);
+                return "redirect:/folder-details/" + folder.getId();
+
+            }
+        }
+        return "redirect:/";
+    }
 }
