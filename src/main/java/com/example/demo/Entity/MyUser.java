@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.UUID;
 
@@ -14,11 +12,11 @@ import java.util.UUID;
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class MyUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private UUID id;
+    private Long id;
 
     @Column(unique = true, name = "name")
     private String name;
@@ -26,6 +24,8 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    private String role;
+    @Column(name = "roles")
+    private String roles;
+
+
 }

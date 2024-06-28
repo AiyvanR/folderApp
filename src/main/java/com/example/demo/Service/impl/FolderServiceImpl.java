@@ -1,13 +1,17 @@
 package com.example.demo.Service.impl;
 
 import com.example.demo.Entity.Folders;
+import com.example.demo.Entity.MyUser;
 import com.example.demo.Entity.TaskCategories;
 import com.example.demo.Entity.Tasks;
 import com.example.demo.Repository.CategoryRepository;
 import com.example.demo.Repository.FolderRepository;
 import com.example.demo.Repository.TasksRepository;
+import com.example.demo.Repository.UserRepository;
 import com.example.demo.Service.FolderService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,11 +23,16 @@ public class FolderServiceImpl implements FolderService {
     FolderRepository folderRepository;
     TasksRepository tasksRepository;
 
+    UserRepository userRepository;
+    PasswordEncoder passwordEncoder;
+
     @Autowired
-    public FolderServiceImpl(CategoryRepository categoryRepository, FolderRepository folderRepository, TasksRepository tasksRepository) {
+    public FolderServiceImpl(CategoryRepository categoryRepository, FolderRepository folderRepository, TasksRepository tasksRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.categoryRepository = categoryRepository;
         this.folderRepository = folderRepository;
         this.tasksRepository = tasksRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -111,5 +120,13 @@ public class FolderServiceImpl implements FolderService {
     @Override
     public List<Tasks> findAllByFolder_Id(Long id) {
         return tasksRepository.findAllByFolder_Id(id);
+    }
+
+
+    @Override
+    public void addUser(MyUser user) {
+        var User = user;
+        User.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(User);
     }
 }

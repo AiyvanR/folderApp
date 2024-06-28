@@ -1,6 +1,7 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Entity.Folders;
+import com.example.demo.Entity.MyUser;
 import com.example.demo.Entity.TaskCategories;
 import com.example.demo.Entity.Tasks;
 import com.example.demo.Service.FolderService;
@@ -56,7 +57,6 @@ public class MainController {
 
 
     @PostMapping(value = "/addCategory")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
     public String addCategory(@RequestParam(name = "folder_id") Long folderId,
                               @RequestParam(name = "category_id") Long categoryId) {
         Folders folder = folderService.getFolder(folderId);
@@ -80,7 +80,6 @@ public class MainController {
 
 
     @DeleteMapping(value = "/deleteCategory")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String deleteCategory(@RequestParam(name = "folder_id") Long folderId,
                                  @RequestParam(name = "category_id") Long categoryId) {
         Folders folder = folderService.getFolder(folderId);
@@ -111,6 +110,7 @@ public class MainController {
     }
 
     @PostMapping(value = "/updateTask")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public String updateTask(@RequestParam(name = "id") Long id,
                              @RequestParam(name = "title") String title,
                              @RequestParam(name = "description") String description,
@@ -134,6 +134,7 @@ public class MainController {
     }
 
     @PostMapping(value = "/deleteTask")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String deleteTask(@RequestParam(name = "folder_id") Long folderId,
                                  @RequestParam(name = "task_id") Long taskId) {
         Folders folder = folderService.getFolder(folderId);
@@ -148,4 +149,6 @@ public class MainController {
         }
         return "redirect:/home";
     }
+
+
 }
