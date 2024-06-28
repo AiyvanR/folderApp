@@ -5,6 +5,7 @@ import com.example.demo.Entity.TaskCategories;
 import com.example.demo.Entity.Tasks;
 import com.example.demo.Service.FolderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class MainController {
         this.folderService = folderService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "/home")
     public String getMain(Model model) {
         List<Folders> folders = folderService.getAllFolders();
         model.addAttribute("folders", folders);
@@ -35,7 +36,7 @@ public class MainController {
         Folders folder = new Folders(null, name, null);
         folderService.saveFolder(folder);
 
-        return "redirect:/";
+        return "redirect:/home";
     }
 
 
@@ -55,6 +56,7 @@ public class MainController {
 
 
     @PostMapping(value = "/addCategory")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public String addCategory(@RequestParam(name = "folder_id") Long folderId,
                               @RequestParam(name = "category_id") Long categoryId) {
         Folders folder = folderService.getFolder(folderId);
@@ -72,12 +74,13 @@ public class MainController {
 
             }
         }
-        return "redirect:/";
+        return "redirect:/home";
     }
 
 
 
     @DeleteMapping(value = "/deleteCategory")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String deleteCategory(@RequestParam(name = "folder_id") Long folderId,
                                  @RequestParam(name = "category_id") Long categoryId) {
         Folders folder = folderService.getFolder(folderId);
@@ -95,7 +98,7 @@ public class MainController {
 
             }
         }
-        return "redirect:/";
+        return "redirect:/home";
     }
 
     @PostMapping(value = "/addTask")
@@ -143,6 +146,6 @@ public class MainController {
 
             }
         }
-        return "redirect:/";
+        return "redirect:/home";
     }
 }
